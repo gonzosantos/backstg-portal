@@ -1,1 +1,0 @@
-# backstg-portal
