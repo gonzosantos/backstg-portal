@@ -1,6 +1,6 @@
 app:
   title: Scaffolded Backstage App
-  baseUrl: http://127.0.0.1:3000
+  baseUrl: http://localhost:3000
 
 organization:
   name: My Company
@@ -28,8 +28,24 @@ backend:
   # This is for local development only, it is not recommended to use this in production
   # The production database configuration is stored in app-config.production.yaml
   database:
-    client: better-sqlite3
-    connection: ':memory:'
+# config options: https://node-postgres.com/apis/client
+    client: pg
+    connection:
+      host: ${POSTGRES_HOST}
+      port: ${POSTGRES_PORT}
+      user: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+      # https://node-postgres.com/features/ssl
+      # ssl:
+      #   host is only needed if the connection name differs from the certificate name.
+      #   This is for example the case with CloudSQL.
+      #   host: servername in the certificate
+      #   ca:
+      #     $file: <file-path>/server.pem
+      #   key:
+      #     $file: <file-path>/client.key
+      #   cert:
+      #     $file: <file-path>/client-cert.pem
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
 
 integrations:
@@ -37,7 +53,8 @@ integrations:
     - host: github.com
       # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
       # about setting up the GitHub integration here: https://backstage.io/docs/getting-started/configuration#setting-up-a-github-integration
-      token: ${GITHUB_TOKEN}
+      # token: ${GITHUB_TOKEN}
+      token: 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
     ### Example for how to add your GitHub Enterprise instance using the API:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
@@ -64,7 +81,12 @@ techdocs:
 
 auth:
   # see https://backstage.io/docs/auth/ to learn about auth providers
-  providers: {}
+  environment: development
+  providers:
+    github:
+      development:
+        clientId: 753bd27d4d6f569355ab
+        clientSecret: 73318b1d5de8f1f7a843294636d263e26f52bddb
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
